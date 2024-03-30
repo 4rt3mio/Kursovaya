@@ -22,13 +22,12 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    void moveTile(Tile* tile, int row, int column);
-    void showEvent(QShowEvent *event);
+
+private slots:
+    void on_bnt_select15_clicked();
 
 private:
     Ui::MainWindow *ui;
     Puzzle15 puzzleWidget;
-    QGridLayout* _grid;
-    QVector<Tile*> _buttons;
 };
 #endif // MAINWINDOW_H

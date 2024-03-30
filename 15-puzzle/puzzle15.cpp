@@ -23,6 +23,10 @@ Puzzle15::Puzzle15(QWidget *parent)
     }
     for (int i = 0; i < 16; i++) {
         _buttons[i]->set_number(i);
+        if (i == 0) {
+            _buttons[i]->setVisible(false);
+            _buttons[i]->setEnabled(false);
+        }
     }
     ui->graphicsView->setLayout(_grid);
 }
@@ -60,8 +64,6 @@ void Puzzle15::moveTile(Tile *tile, int row, int column)
     });
     animation->start();
 }
-
-
 
 void Puzzle15::showEvent(QShowEvent *event)
 {
