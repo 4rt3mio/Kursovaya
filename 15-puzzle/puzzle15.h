@@ -7,7 +7,9 @@
 #include <QApplication>
 #include <QGraphicsScene>
 #include <QPropertyAnimation>
+#include <random>
 #include "tile.h"
+#include "puzzleview.h"
 
 namespace Ui {
 class Puzzle15;
@@ -20,13 +22,13 @@ class Puzzle15 : public QWidget
 public:
     explicit Puzzle15(QWidget *parent = nullptr);
     ~Puzzle15();
-    void moveTile(Tile* tile, int row, int column);
     void showEvent(QShowEvent *event);
 
 private:
     Ui::Puzzle15 *ui;
     QGridLayout* _grid;
     QVector<Tile*> _buttons;
+    PuzzleView *pv;
 };
 
 #endif // PUZZLE15_H
