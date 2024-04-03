@@ -23,6 +23,19 @@
     </rect>
    </property>
   </widget>
+  <widget class="QPushButton" name="bnt_generation">
+   <property name="geometry">
+    <rect>
+     <x>500</x>
+     <y>50</y>
+     <width>291</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Сгенерировать случайную расстановку</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

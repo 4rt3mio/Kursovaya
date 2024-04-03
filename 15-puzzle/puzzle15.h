@@ -24,6 +24,9 @@ public:
     ~Puzzle15();
     void showEvent(QShowEvent *event);
 
+private slots:
+    void on_bnt_generation_clicked();
+
 private:
     Ui::Puzzle15 *ui;
     QGridLayout* _grid;

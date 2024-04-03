@@ -16,8 +16,13 @@ public:
     PuzzleView(QGridLayout* grid, QGraphicsView* view);
     void generateInitialPuzzle();
     void moveTile(Tile* tile, int row, int column);
-    bool isMoved(int index);
-    void move(int _ind);
+    bool isMovebleLeft(int index);
+    bool isMovebleRight(int index);
+    bool isMovebleUp(int index);
+    bool isMovebleDown(int index);
+    //std::function<void()> _animationFinishedCallback;
+    //void registerAnimationFinishedCallback(std::function<void()> callback);
+    void move(Tile* tile);
     void shuffleTiles();
     bool isSolvable();
     QVector<Tile*> get_buttons();
