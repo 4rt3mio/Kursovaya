@@ -1,6 +1,19 @@
 #include "puzzleview.h"
 
-PuzzleView::PuzzleView(QGridLayout* grid, QGraphicsView* view)
+PuzzleView::PuzzleView(QWidget *parent)
+    : QWidget(parent) {
+    //я пидор
+}
+
+PuzzleView::~PuzzleView()
+{
+    for (Tile *tile : _buttons) {
+        delete tile;
+    }
+    _buttons.clear();
+}
+
+void PuzzleView::SetPuzzleView(QGridLayout* grid, QGraphicsView* view)
 {
     _grid = grid;
     _view = view;
@@ -23,6 +36,9 @@ void PuzzleView::generateInitialPuzzle()
         int tileSize = cellSize - 10;
         new_btn->setMinimumSize(tileSize, tileSize);
         _grid->addWidget(new_btn, i / 4, i % 4);
+        connect(new_btn, &Tile::clicked, this, [this, new_btn]() {
+            move(new_btn);
+        });
         _buttons.append(new_btn);
     }
     for (int i = 0; i < 16; i++) {
@@ -88,31 +104,26 @@ QVector<Tile *> PuzzleView::get_buttons()
 void PuzzleView::genInit()
 {
     shuffleTiles();
-    if (!isSolvable()) {
-        if (_buttons[0]->get_index() != 0 && _buttons[1]->get_index() != 0) {
-            _grid->addWidget(_buttons[0], 0, 1);
-            _grid->addWidget(_buttons[1], 0, 0);
-            _buttons[0]->set_index(1);
-            _buttons[1]->set_index(0);
-        }
-        else if (_buttons[1]->get_index() != 0 && _buttons[2]->get_index() != 0) {
-            _grid->addWidget(_buttons[1], 0, 2);
-            _grid->addWidget(_buttons[2], 0, 1);
-            _buttons[1]->set_index(2);
-            _buttons[2]->set_index(1);
-        }
-        else {
-            _grid->addWidget(_buttons[2], 0, 3);
-            _grid->addWidget(_buttons[3], 0, 2);
-            _buttons[2]->set_index(3);
-            _buttons[3]->set_index(2);
-        }
+    while (!isSolvable()) {
+        shuffleTiles();
+    }
+}
+
+void PuzzleView::removeWidgetAt(int row, int column)
+{
+    QWidget *widgetToRemove = _grid->itemAtPosition(row, column)->widget();
+    if (widgetToRemove) {
+        _grid->removeWidget(widgetToRemove);
+        delete widgetToRemove;
     }
 }
 
 void PuzzleView::moveTile(Tile *tile, int row, int column)
 {
     QPropertyAnimation *animation = new QPropertyAnimation(tile, "geometry", nullptr);
+    for (Tile *button : _buttons) {
+        button->setEnabled(false);
+    }
 
     int startX = _grid->itemAtPosition(tile->get_index() / 4, tile->get_index() % 4)->geometry().x();
     int startY = _grid->itemAtPosition(tile->get_index() / 4, tile->get_index() % 4)->geometry().y();
@@ -122,14 +133,17 @@ void PuzzleView::moveTile(Tile *tile, int row, int column)
     int endX = endRect.x();
     int endY = endRect.y();
 
-    animation->setDuration(1000);
+    animation->setDuration(150);
     animation->setStartValue(QRect(startX, startY, tile->width(), tile->height()));
     animation->setEndValue(QRect(endX, endY, tile->width(), tile->height()));
 
-    _grid->addWidget(tile, row, column);
-    /*registerAnimationFinishedCallback([=]() {
+    connect(animation, &QPropertyAnimation::finished, [=]() {
         _grid->addWidget(tile, row, column);
-    });*/
+        for (Tile *button : _buttons) {
+            button->setEnabled(true);
+        }
+        animation->deleteLater();
+    });
 
     animation->start();
 }
@@ -198,11 +212,6 @@ bool PuzzleView::isMovebleDown(int index)
     return false;
 }
 
-/*void PuzzleView::registerAnimationFinishedCallback(std::function<void ()> callback)
-{
-    _animationFinishedCallback = callback;
-}*/
-
 void PuzzleView::move(Tile *tile)
 {
     int tile_index = tile->get_index();
@@ -236,9 +245,31 @@ void PuzzleView::move(Tile *tile)
         tile->set_index(tile_index + 1);
     }
     else if (isMovebleUp(tile_index)) {
-
+        int find_index = tile_index - 4;
+        for (Tile *button : _buttons) {
+            if (button->get_index() == find_index) {
+                null_tile = button;
+            }
+        }
+        int column = tile_index % 4;
+        int row = tile_index / 4;
+        moveTile(tile, row - 1, column);
+        moveTile(null_tile, row, column);
+        null_tile->set_index(tile_index);
+        tile->set_index(tile_index - 4);
     }
     else if (isMovebleDown(tile_index)) {
-
+        int find_index = tile_index + 4;
+        for (Tile *button : _buttons) {
+            if (button->get_index() == find_index) {
+                null_tile = button;
+            }
+        }
+        int column = tile_index % 4;
+        int row = tile_index / 4;
+        moveTile(tile, row + 1, column);
+        moveTile(null_tile, row, column);
+        null_tile->set_index(tile_index);
+        tile->set_index(tile_index + 4);
     }
 }

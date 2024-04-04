@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QMainWindow>
+#include <QTimer>
 #include <QGridLayout>
 #include <QApplication>
 #include <QGraphicsScene>
@@ -22,7 +23,6 @@ class Puzzle15 : public QWidget
 public:
     explicit Puzzle15(QWidget *parent = nullptr);
     ~Puzzle15();
-    void showEvent(QShowEvent *event);
 
 private slots:
     void on_bnt_generation_clicked();
@@ -32,6 +32,7 @@ private:
     QGridLayout* _grid;
     QVector<Tile*> _buttons;
     PuzzleView *pv;
+    QTimer *timer;
 };
 
 #endif // PUZZLE15_H

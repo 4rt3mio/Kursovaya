@@ -10,23 +10,26 @@
 #include <algorithm>
 #include "tile.h"
 
-class PuzzleView
+class PuzzleView : public QWidget
 {
+    Q_OBJECT
+
 public:
-    PuzzleView(QGridLayout* grid, QGraphicsView* view);
+    explicit PuzzleView(QWidget *parent = nullptr);
+    ~PuzzleView();
+    void SetPuzzleView(QGridLayout* grid, QGraphicsView* view);
     void generateInitialPuzzle();
     void moveTile(Tile* tile, int row, int column);
     bool isMovebleLeft(int index);
     bool isMovebleRight(int index);
     bool isMovebleUp(int index);
     bool isMovebleDown(int index);
-    //std::function<void()> _animationFinishedCallback;
-    //void registerAnimationFinishedCallback(std::function<void()> callback);
     void move(Tile* tile);
     void shuffleTiles();
     bool isSolvable();
     QVector<Tile*> get_buttons();
     void genInit();
+    void removeWidgetAt(int row, int column);
 private:
     QGridLayout* _grid;
     QGraphicsView* _view;
