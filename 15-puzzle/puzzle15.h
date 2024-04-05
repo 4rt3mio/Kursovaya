@@ -27,6 +27,8 @@ public:
 private slots:
     void on_bnt_generation_clicked();
 
+    void on_bnt_get_my_result_clicked();
+
 private:
     Ui::Puzzle15 *ui;
     QGridLayout* _grid;

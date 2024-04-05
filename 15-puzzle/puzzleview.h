@@ -9,6 +9,8 @@
 #include <QApplication>
 #include <QGuiApplication>
 #include <QScreen>
+#include <QFile>
+#include <QTextStream>
 #include <QMessageBox>
 #include <random>
 #include <algorithm>
@@ -32,6 +34,9 @@ public:
     void shuffleTiles();
     bool isSolvable();
     bool checkSolved();
+    void appendAttemptsToFile(int count_of_attempts);
+    void readResultsFromFile(const QString &fileName);
+    void showBestResults();
     QVector<Tile*> get_buttons();
     void genInit();
     void removeWidgetAt(int row, int column);
@@ -41,6 +46,7 @@ private:
     QGraphicsView* _view;
     QVector<Tile*> _buttons;
     long long count_of_attempts = 0;
+    QVector <long long> results;
 };
 
 #endif // PUZZLEVIEW_H

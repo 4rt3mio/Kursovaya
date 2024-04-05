@@ -113,6 +113,60 @@ bool PuzzleView::checkSolved()
     return true;
 }
 
+void PuzzleView::appendAttemptsToFile(int count_of_attempts)
+{
+    QFile file("attempts.txt");
+    if (file.open(QIODevice::Append | QIODevice::Text)) {
+        QTextStream stream(&file);
+        stream << count_of_attempts << "\n";
+        file.close();
+    } else {
+        qDebug() << "Не удалось открыть файл для записи!";
+    }
+}
+
+void PuzzleView::readResultsFromFile(const QString &fileName)
+{
+    results.clear();
+    QFile file(fileName);
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QTextStream in(&file);
+        while (!in.atEnd()) {
+            QString line = in.readLine();
+            bool ok;
+            long long result = line.toInt(&ok);
+            if (ok) {
+                results.append(result);
+            } else {
+                qDebug() << "Ошибка при чтении числа из файла!";
+            }
+        }
+        file.close();
+    } else {
+        qDebug() << "Не удалось открыть файл для чтения!";
+    }
+}
+
+void PuzzleView::showBestResults()
+{
+    if (results.isEmpty()) {
+        QMessageBox::information(nullptr, "Мои результаты", "Нет доступных результатов.");
+        return;
+    }
+
+    std::sort(results.begin(), results.end());
+    QVector<long long> bestResults;
+    for (int i = 0; i < qMin(15, results.size()); ++i) {
+        bestResults.append(results[i]);
+    }
+    QString message = "<html><body><h2>Лучшие результаты:</h2><ul>";
+    for (int i = 0; i < bestResults.size(); ++i) {
+        message += "<li>" + QString::number(i + 1) + ") " + QString::number(bestResults[i]) + "</li>";
+    }
+    message += "</ul></body></html>";
+    QMessageBox::information(nullptr, "Мои результаты", message);
+}
+
 QVector<Tile *> PuzzleView::get_buttons()
 {
     return _buttons;
@@ -299,6 +353,7 @@ void PuzzleView::move(Tile *tile)
         count_of_attempts++;
     }
     if (checkSolved()) {
+        appendAttemptsToFile(count_of_attempts);
         QMessageBox msgBox;
         const QString message = "<html><body>"
                                 "<h1>Головоломка собрана!</h1>"

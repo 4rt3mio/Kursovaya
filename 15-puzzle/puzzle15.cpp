@@ -6,6 +6,7 @@ Puzzle15::Puzzle15(QWidget *parent)
     , ui(new Ui::Puzzle15)
 {
     ui->setupUi(this);
+    ui->graphicsView->setStyleSheet("background-color: #eb86dd;");
     _grid = new QGridLayout(ui->graphicsView);
     pv = new PuzzleView();
     pv->SetPuzzleView(_grid, ui->graphicsView);
@@ -30,5 +31,12 @@ void Puzzle15::on_bnt_generation_clicked()
     pv->generateInitialPuzzle();
     pv->genInit();
     _buttons = pv->get_buttons();
+}
+
+
+void Puzzle15::on_bnt_get_my_result_clicked()
+{
+    pv->readResultsFromFile("attempts.txt");
+    pv->showBestResults();
 }
 

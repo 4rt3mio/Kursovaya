@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(153, 193, 241);</string>
+  </property>
   <widget class="QGraphicsView" name="graphicsView">
    <property name="geometry">
     <rect>
@@ -23,49 +26,57 @@
     </rect>
    </property>
   </widget>
-  <widget class="QPushButton" name="bnt_generation">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>570</x>
      <y>310</y>
-     <width>311</width>
-     <height>25</height>
+     <width>321</width>
+     <height>101</height>
     </rect>
    </property>
-   <property name="acceptDrops">
-    <bool>false</bool>
-   </property>
-   <property name="autoFillBackground">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>Сгенерировать случайную расстановку</string>
-   </property>
-   <property name="icon">
-    <iconset theme="view-refresh"/>
-   </property>
-  </widget>
-  <widget class="QWidget" name="">
-   <property name="geometry">
-    <rect>
-     <x>580</x>
-     <y>340</y>
-     <width>261</width>
-     <height>19</height>
-    </rect>
-   </property>
-   <layout class="QHBoxLayout" name="horizontalLayout">
+   <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QLabel" name="lbl_info_attempts">
+     <widget class="QPushButton" name="bnt_generation">
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
       <property name="text">
-       <string>Текущее число попыток: </string>
+       <string>Сгенерировать случайную расстановку</string>
+      </property>
+      <property name="icon">
+       <iconset theme="view-refresh"/>
       </property>
      </widget>
     </item>
     <item>
-     <widget class="QLabel" name="lbl_count_attempts">
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QLabel" name="lbl_info_attempts">
+        <property name="text">
+         <string>Текущее число попыток: </string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="lbl_count_attempts">
+        <property name="text">
+         <string>0</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QPushButton" name="bnt_get_my_result">
       <property name="text">
-       <string>0</string>
+       <string>Вывести свои лучшие результаты</string>
+      </property>
+      <property name="icon">
+       <iconset theme="emblem-documents"/>
       </property>
      </widget>
     </item>
