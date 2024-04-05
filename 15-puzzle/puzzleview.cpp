@@ -28,6 +28,7 @@ void PuzzleView::generateInitialPuzzle()
     }
 
     _buttons.clear();
+    count_of_attempts = 0;
     int cellSize = std::min(_view->width(), _view->height()) / 4;
 
     for (int i = 0; i < 16; i++) {
@@ -70,30 +71,46 @@ void PuzzleView::shuffleTiles()
 
 bool PuzzleView::isSolvable()
 {
+    QVector<short> vec_for_check(16);
+    for (Tile *button : _buttons) {
+        vec_for_check[button->get_index()] = button->get_number();
+    }
+
     int inv = 0;
     for (int i = 0; i < 16; ++i)
     {
-        int currentIndex = _buttons[i]->get_index();
-        if (currentIndex)
+        if (vec_for_check[i] != 0)
         {
             for (int j = 0; j < i; ++j)
             {
-                int comparedIndex = _buttons[j]->get_index();
-                if (comparedIndex > currentIndex)
+                if (vec_for_check[j] != 0 && vec_for_check[j] > vec_for_check[i])
                 {
                     ++inv;
                 }
             }
         }
     }
+
     for (int i = 0; i < 16; ++i)
     {
-        if (_buttons[i]->get_index() == 0)
+        if (vec_for_check[i] == 0)
         {
             inv += 1 + i / 4;
         }
     }
+
     return (inv % 2 == 0);
+}
+
+bool PuzzleView::checkSolved()
+{
+    for (Tile *button : _buttons) {
+        if (button->get_number() == 0) {
+            if (button->get_index() != 15) return false;
+        }
+        else if (button->get_index() != (button->get_number() - 1)) return false;
+    }
+    return true;
 }
 
 QVector<Tile *> PuzzleView::get_buttons()
@@ -116,6 +133,11 @@ void PuzzleView::removeWidgetAt(int row, int column)
         _grid->removeWidget(widgetToRemove);
         delete widgetToRemove;
     }
+}
+
+long long PuzzleView::get_count_of_attempts()
+{
+    return count_of_attempts;
 }
 
 void PuzzleView::moveTile(Tile *tile, int row, int column)
@@ -229,6 +251,7 @@ void PuzzleView::move(Tile *tile)
         moveTile(null_tile, row, column);
         null_tile->set_index(tile_index);
         tile->set_index(tile_index - 1);
+        count_of_attempts++;
     }
     else if (isMovebleRight(tile_index)) {
         int find_index = tile_index + 1;
@@ -243,6 +266,7 @@ void PuzzleView::move(Tile *tile)
         moveTile(null_tile, row, column);
         null_tile->set_index(tile_index);
         tile->set_index(tile_index + 1);
+        count_of_attempts++;
     }
     else if (isMovebleUp(tile_index)) {
         int find_index = tile_index - 4;
@@ -257,6 +281,7 @@ void PuzzleView::move(Tile *tile)
         moveTile(null_tile, row, column);
         null_tile->set_index(tile_index);
         tile->set_index(tile_index - 4);
+        count_of_attempts++;
     }
     else if (isMovebleDown(tile_index)) {
         int find_index = tile_index + 4;
@@ -271,5 +296,28 @@ void PuzzleView::move(Tile *tile)
         moveTile(null_tile, row, column);
         null_tile->set_index(tile_index);
         tile->set_index(tile_index + 4);
+        count_of_attempts++;
+    }
+    if (checkSolved()) {
+        QMessageBox msgBox;
+        const QString message = "<html><body>"
+                                "<h1>Головоломка собрана!</h1>"
+                                "<p>Количество ходов: </p>" + QString::number(count_of_attempts) +
+                                "<p>Запускаем новую игру!!!</p>"
+                                "</body></html>";
+        msgBox.setText(message);
+        msgBox.setIcon(QMessageBox::Information);
+        msgBox.resize(600, 600);
+        msgBox.adjustSize();
+        QAbstractButton *okButton = msgBox.addButton(tr("OK"), QMessageBox::ActionRole);
+        QObject::connect(okButton, &QAbstractButton::clicked, [=]() {
+            generateInitialPuzzle();
+            genInit();
+        });
+        QRect screenGeometry = QGuiApplication::primaryScreen()->geometry();
+        int x = (screenGeometry.width() - msgBox.width()) / 2;
+        int y = (screenGeometry.height() - msgBox.height()) / 2;
+        msgBox.move(x, y);
+        msgBox.exec();
     }
 }

@@ -12,6 +12,12 @@ Puzzle15::Puzzle15(QWidget *parent)
     pv->generateInitialPuzzle();
     pv->genInit();
     _buttons = pv->get_buttons();
+    timer = new QTimer;
+    QObject::connect(timer, &QTimer::timeout, [=](){
+        update();
+        ui->lbl_count_attempts->setText(QString::number(pv->get_count_of_attempts()));
+    });
+    timer->start(25);
 }
 
 Puzzle15::~Puzzle15()

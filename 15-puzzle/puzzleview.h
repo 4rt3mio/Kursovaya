@@ -6,6 +6,10 @@
 #include <QGridLayout>
 #include <QGraphicsView>
 #include <QPropertyAnimation>
+#include <QApplication>
+#include <QGuiApplication>
+#include <QScreen>
+#include <QMessageBox>
 #include <random>
 #include <algorithm>
 #include "tile.h"
@@ -27,13 +31,16 @@ public:
     void move(Tile* tile);
     void shuffleTiles();
     bool isSolvable();
+    bool checkSolved();
     QVector<Tile*> get_buttons();
     void genInit();
     void removeWidgetAt(int row, int column);
+    long long get_count_of_attempts();
 private:
     QGridLayout* _grid;
     QGraphicsView* _view;
     QVector<Tile*> _buttons;
+    long long count_of_attempts = 0;
 };
 
 #endif // PUZZLEVIEW_H
