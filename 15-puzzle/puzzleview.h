@@ -25,6 +25,7 @@ public:
     ~PuzzleView();
     void SetPuzzleView(QGridLayout* grid, QGraphicsView* view);
     void generateInitialPuzzle();
+    void generateInitialPicturePuzzle();
     void moveTile(Tile* tile, int row, int column);
     bool isMovebleLeft(int index);
     bool isMovebleRight(int index);

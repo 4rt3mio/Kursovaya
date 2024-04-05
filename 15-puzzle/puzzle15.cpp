@@ -28,7 +28,8 @@ Puzzle15::~Puzzle15()
 
 void Puzzle15::on_bnt_generation_clicked()
 {
-    pv->generateInitialPuzzle();
+    if (ui->cbx_picture->isChecked()) pv->generateInitialPicturePuzzle();
+    else pv->generateInitialPuzzle();
     pv->genInit();
     _buttons = pv->get_buttons();
 }

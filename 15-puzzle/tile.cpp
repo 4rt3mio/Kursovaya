@@ -9,6 +9,17 @@ Tile::Tile(QWidget *parent)
     setStyleSheet(QString("QPushButton {%1}").arg(colorStyle));
 }
 
+void Tile::set_image(const QPixmap &image)
+{
+    QSize buttonSize = size();
+    QPixmap scaledImage = image.scaled(buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    setIcon(QIcon(scaledImage));
+    setIconSize(buttonSize);
+    setText("");
+    QString colorStyle = "background-color: #eb86dd;";
+    setStyleSheet(QString("QPushButton {%1}").arg(colorStyle));
+}
+
 void Tile::set_number(short number)
 {
     _number = number;

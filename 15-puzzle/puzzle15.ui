@@ -30,12 +30,19 @@
    <property name="geometry">
     <rect>
      <x>570</x>
-     <y>310</y>
+     <y>291</y>
      <width>321</width>
-     <height>101</height>
+     <height>131</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QCheckBox" name="cbx_picture">
+      <property name="text">
+       <string>Картинки</string>
+      </property>
+     </widget>
+    </item>
     <item>
      <widget class="QPushButton" name="bnt_generation">
       <property name="acceptDrops">

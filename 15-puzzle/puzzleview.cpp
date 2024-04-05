@@ -53,6 +53,56 @@ void PuzzleView::generateInitialPuzzle()
     _view->setLayout(_grid);
 }
 
+void PuzzleView::generateInitialPicturePuzzle()
+{
+    QLayoutItem *child;
+    while ((child = _grid->takeAt(0)) != nullptr) {
+        delete child->widget();
+        delete child;
+    }
+
+    _buttons.clear();
+    count_of_attempts = 0;
+    int cellSize = std::min(_view->width(), _view->height()) / 4;
+
+    QPixmap pixmap("/home/fort3mio/Downloads/swin.jpg");
+    QVector<QPixmap> tiles;
+    QSize imageSize = pixmap.size();
+    int tileSize = qMin(imageSize.width(), imageSize.height()) / 4;
+    for (int i = 0; i < 4; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            QRect rect(j * tileSize, i * tileSize, tileSize, tileSize);
+            tiles.append(pixmap.copy(rect));
+        }
+    }
+
+    for (int i = 0; i < 16; i++) {
+        auto new_btn = new Tile(_view);
+        new_btn->set_index(i);
+        int tileSize = cellSize;
+        new_btn->setMinimumSize(tileSize, tileSize);
+        _grid->addWidget(new_btn, i / 4, i % 4);
+        connect(new_btn, &Tile::clicked, this, [this, new_btn]() {
+            move(new_btn);
+        });
+        _buttons.append(new_btn);
+    }
+    for (int i = 0; i < 16; i++) {
+        _buttons[i]->set_number(i);
+        if (i == 0) {
+            _buttons[i]->setVisible(false);
+            _buttons[i]->setEnabled(false);
+        }
+    }
+
+    for (int i = 0; i < 16; ++i) {
+        _buttons[i]->set_image(tiles[i]);
+    }
+
+    shuffleTiles();
+    _view->setLayout(_grid);
+}
+
 void PuzzleView::shuffleTiles()
 {
     QVector<int> indices(16);

@@ -8,6 +8,7 @@ class Tile : public QPushButton
 {
 public:
     Tile(QWidget *parent = nullptr);
+    void set_image(const QPixmap &image);
     void set_number(short number);
     void set_index(short index);
     short get_number();
