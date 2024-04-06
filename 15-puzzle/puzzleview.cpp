@@ -69,7 +69,9 @@ void PuzzleView::generateInitialPicturePuzzle()
     count_of_attempts = 0;
     int cellSize = std::min(_view->width(), _view->height()) / _field_size;
 
-    QPixmap pixmap("/home/fort3mio/Downloads/swin.jpg");
+    getListOfPictures();
+    int randomNumber = QRandomGenerator::global()->bounded(pictureList.size());
+    QPixmap pixmap(pictureList[randomNumber]);
     QVector<QPixmap> tiles;
     QSize imageSize = pixmap.size();
     int tileSize = qMin(imageSize.width(), imageSize.height()) / _field_size;
@@ -239,6 +241,17 @@ void PuzzleView::showBestResults()
     }
     message += "</ul></body></html>";
     QMessageBox::information(nullptr, "Мои результаты", message);
+}
+
+void PuzzleView::getListOfPictures()
+{
+    QDir directory(":/pictures");
+    QStringList files = directory.entryList(QDir::Files);
+
+    for (const QString &file : files) {
+        QString path = ":/pictures/" + file;
+        pictureList.append(path);
+    }
 }
 
 QVector<Tile *> PuzzleView::get_buttons()

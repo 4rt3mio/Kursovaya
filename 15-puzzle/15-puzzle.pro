@@ -25,6 +25,9 @@ FORMS += \
     mainwindow.ui \
     puzzle15.ui
 
+RESOURCES += \
+    pictures
+
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin

@@ -9,6 +9,8 @@
 #include <QApplication>
 #include <QGuiApplication>
 #include <QScreen>
+#include <QDir>
+#include <QRandomGenerator>
 #include <QFile>
 #include <QTextStream>
 #include <QMessageBox>
@@ -38,6 +40,7 @@ public:
     void appendAttemptsToFile(int count_of_attempts);
     void readResultsFromFile();
     void showBestResults();
+    void getListOfPictures();
     QVector<Tile*> get_buttons();
     void genInit();
     void removeWidgetAt(int row, int column);
@@ -51,6 +54,7 @@ private:
     long long count_of_attempts = 0;
     QVector <long long> results;
     bool isPicture = false;
+    QVector<QString> pictureList;
 };
 
 #endif // PUZZLEVIEW_H
