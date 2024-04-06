@@ -14,18 +14,57 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="bnt_select15">
+   <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
       <x>310</x>
       <y>220</y>
-      <width>89</width>
-      <height>25</height>
+      <width>171</width>
+      <height>181</height>
      </rect>
     </property>
-    <property name="text">
-     <string>4x4</string>
-    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QPushButton" name="bnt_select8">
+       <property name="text">
+        <string>3x3</string>
+       </property>
+       <property name="icon">
+        <iconset theme="go-next"/>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="bnt_select15">
+       <property name="text">
+        <string>4x4</string>
+       </property>
+       <property name="icon">
+        <iconset theme="go-next"/>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="bnt_select24">
+       <property name="text">
+        <string>5x5</string>
+       </property>
+       <property name="icon">
+        <iconset theme="go-next"/>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="bnt_select35">
+       <property name="text">
+        <string>6x6</string>
+       </property>
+       <property name="icon">
+        <iconset theme="go-next"/>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

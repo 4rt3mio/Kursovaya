@@ -21,7 +21,7 @@ class Puzzle15 : public QWidget
     Q_OBJECT
 
 public:
-    explicit Puzzle15(QWidget *parent = nullptr);
+    explicit Puzzle15(int size, QWidget *parent = nullptr);
     ~Puzzle15();
 
 private slots:

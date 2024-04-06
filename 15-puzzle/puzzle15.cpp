@@ -1,7 +1,7 @@
 #include "puzzle15.h"
 #include "ui_puzzle15.h"
 
-Puzzle15::Puzzle15(QWidget *parent)
+Puzzle15::Puzzle15(int size, QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Puzzle15)
 {
@@ -9,7 +9,7 @@ Puzzle15::Puzzle15(QWidget *parent)
     ui->graphicsView->setStyleSheet("background-color: #eb86dd;");
     _grid = new QGridLayout(ui->graphicsView);
     pv = new PuzzleView();
-    pv->SetPuzzleView(_grid, ui->graphicsView);
+    pv->SetPuzzleView(_grid, ui->graphicsView, size);
     pv->generateInitialPuzzle();
     pv->genInit();
     _buttons = pv->get_buttons();
@@ -37,7 +37,7 @@ void Puzzle15::on_bnt_generation_clicked()
 
 void Puzzle15::on_bnt_get_my_result_clicked()
 {
-    pv->readResultsFromFile("attempts.txt");
+    pv->readResultsFromFile();
     pv->showBestResults();
 }
 

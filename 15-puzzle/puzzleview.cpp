@@ -2,7 +2,7 @@
 
 PuzzleView::PuzzleView(QWidget *parent)
     : QWidget(parent) {
-    //я пидор
+    //
 }
 
 PuzzleView::~PuzzleView()
@@ -13,10 +13,12 @@ PuzzleView::~PuzzleView()
     _buttons.clear();
 }
 
-void PuzzleView::SetPuzzleView(QGridLayout* grid, QGraphicsView* view)
+void PuzzleView::SetPuzzleView(QGridLayout* grid, QGraphicsView* view, long long field_size)
 {
     _grid = grid;
     _view = view;
+    _field_size = field_size;
+    _cnt_tiles = _field_size * _field_size;
 }
 
 void PuzzleView::generateInitialPuzzle()
@@ -30,20 +32,20 @@ void PuzzleView::generateInitialPuzzle()
 
     _buttons.clear();
     count_of_attempts = 0;
-    int cellSize = std::min(_view->width(), _view->height()) / 4;
+    int cellSize = std::min(_view->width(), _view->height()) / _field_size;
 
-    for (int i = 0; i < 16; i++) {
+    for (int i = 0; i < _cnt_tiles; i++) {
         auto new_btn = new Tile(_view);
         new_btn->set_index(i);
         int tileSize = cellSize - 10;
         new_btn->setMinimumSize(tileSize, tileSize);
-        _grid->addWidget(new_btn, i / 4, i % 4);
+        _grid->addWidget(new_btn, i / _field_size, i % _field_size);
         connect(new_btn, &Tile::clicked, this, [this, new_btn]() {
             move(new_btn);
         });
         _buttons.append(new_btn);
     }
-    for (int i = 0; i < 16; i++) {
+    for (int i = 0; i < _cnt_tiles; i++) {
         _buttons[i]->set_number(i);
         if (i == 0) {
             _buttons[i]->setVisible(false);
@@ -65,31 +67,31 @@ void PuzzleView::generateInitialPicturePuzzle()
 
     _buttons.clear();
     count_of_attempts = 0;
-    int cellSize = std::min(_view->width(), _view->height()) / 4;
+    int cellSize = std::min(_view->width(), _view->height()) / _field_size;
 
     QPixmap pixmap("/home/fort3mio/Downloads/swin.jpg");
     QVector<QPixmap> tiles;
     QSize imageSize = pixmap.size();
-    int tileSize = qMin(imageSize.width(), imageSize.height()) / 4;
-    for (int i = 0; i < 4; ++i) {
-        for (int j = 0; j < 4; ++j) {
+    int tileSize = qMin(imageSize.width(), imageSize.height()) / _field_size;
+    for (int i = 0; i < _field_size; ++i) {
+        for (int j = 0; j < _field_size; ++j) {
             QRect rect(j * tileSize, i * tileSize, tileSize, tileSize);
             tiles.append(pixmap.copy(rect));
         }
     }
 
-    for (int i = 0; i < 16; i++) {
+    for (int i = 0; i < _cnt_tiles; i++) {
         auto new_btn = new Tile(_view);
         new_btn->set_index(i);
         int tileSize = cellSize - 3;
         new_btn->setMinimumSize(tileSize, tileSize);
-        _grid->addWidget(new_btn, i / 4, i % 4);
+        _grid->addWidget(new_btn, i / _field_size, i % _field_size);
         connect(new_btn, &Tile::clicked, this, [this, new_btn]() {
             move(new_btn);
         });
         _buttons.append(new_btn);
     }
-    for (int i = 0; i < 16; i++) {
+    for (int i = 0; i < _cnt_tiles; i++) {
         _buttons[i]->set_number(i);
         if (i == 0) {
             _buttons[i]->setVisible(false);
@@ -97,39 +99,39 @@ void PuzzleView::generateInitialPicturePuzzle()
         }
     }
 
-    for (int i = 1; i < 16; ++i) {
+    for (int i = 1; i < _cnt_tiles; ++i) {
         _buttons[i]->set_image(tiles[i - 1]);
     }
-    _buttons[0]->set_image(tiles[15]);
+    _buttons[0]->set_image(tiles[_cnt_tiles - 1]);
     shuffleTiles();
     _view->setLayout(_grid);
 }
 
 void PuzzleView::shuffleTiles()
 {
-    QVector<int> indices(16);
+    QVector<int> indices(_cnt_tiles);
     std::iota(indices.begin(), indices.end(), 0);
     std::random_device rd;
     std::mt19937 g(rd());
     std::shuffle(indices.begin(), indices.end(), g);
-    for (int i = 0; i < 16; ++i) {
+    for (int i = 0; i < _cnt_tiles; ++i) {
         int newIndex = indices[i];
         _buttons[newIndex]->set_index(i);
-        int row = i / 4;
-        int column = i % 4;
+        int row = i / _field_size;
+        int column = i % _field_size;
         _grid->addWidget(_buttons[newIndex], row, column);
     }
 }
 
 bool PuzzleView::isSolvable()
 {
-    QVector<short> vec_for_check(16);
+    QVector<short> vec_for_check(_cnt_tiles);
     for (Tile *button : _buttons) {
         vec_for_check[button->get_index()] = button->get_number();
     }
 
     int inv = 0;
-    for (int i = 0; i < 16; ++i)
+    for (int i = 0; i < _cnt_tiles; ++i)
     {
         if (vec_for_check[i] != 0)
         {
@@ -142,15 +144,15 @@ bool PuzzleView::isSolvable()
             }
         }
     }
-
-    for (int i = 0; i < 16; ++i)
-    {
-        if (vec_for_check[i] == 0)
+    if (_field_size % 2 == 0) {
+        for (int i = 0; i < _cnt_tiles; ++i)
         {
-            inv += 1 + i / 4;
+            if (vec_for_check[i] == 0)
+            {
+                inv += 1 + i / _field_size;
+            }
         }
     }
-
     return (inv % 2 == 0);
 }
 
@@ -158,7 +160,7 @@ bool PuzzleView::checkSolved()
 {
     for (Tile *button : _buttons) {
         if (button->get_number() == 0) {
-            if (button->get_index() != 15) return false;
+            if (button->get_index() != (_cnt_tiles - 1)) return false;
         }
         else if (button->get_index() != (button->get_number() - 1)) return false;
     }
@@ -167,20 +169,40 @@ bool PuzzleView::checkSolved()
 
 void PuzzleView::appendAttemptsToFile(int count_of_attempts)
 {
-    QFile file("attempts.txt");
-    if (file.open(QIODevice::Append | QIODevice::Text)) {
+    QFile file;
+
+    if (_field_size == 3) {
+        file.setFileName("attempts3.txt");
+    } else if (_field_size == 4) {
+        file.setFileName("attempts4.txt");
+    } else if (_field_size == 5) {
+        file.setFileName("attempts5.txt");
+    } else if (_field_size == 6) {
+        file.setFileName("attempts6.txt");
+    }
+
+    if (file.open(QIODevice::ReadWrite | QIODevice::Append | QIODevice::Text)) {
         QTextStream stream(&file);
         stream << count_of_attempts << "\n";
         file.close();
     } else {
-        qDebug() << "Не удалось открыть файл для записи!";
+        qDebug() << "Не удалось открыть/создать файл для записи!";
     }
 }
 
-void PuzzleView::readResultsFromFile(const QString &fileName)
+void PuzzleView::readResultsFromFile()
 {
     results.clear();
-    QFile file(fileName);
+    QFile file;
+    if (_field_size == 3) {
+        file.setFileName("attempts3.txt");
+    } else if (_field_size == 4) {
+        file.setFileName("attempts4.txt");
+    } else if (_field_size == 5) {
+        file.setFileName("attempts5.txt");
+    } else if (_field_size == 6) {
+        file.setFileName("attempts6.txt");
+    }
     if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         QTextStream in(&file);
         while (!in.atEnd()) {
@@ -253,9 +275,9 @@ void PuzzleView::moveTile(Tile *tile, int row, int column)
         for (Tile *button : _buttons) {
             button->setEnabled(false);
         }
-    }
-    int startX = _grid->itemAtPosition(tile->get_index() / 4, tile->get_index() % 4)->geometry().x();
-    int startY = _grid->itemAtPosition(tile->get_index() / 4, tile->get_index() % 4)->geometry().y();
+    }//_cnt_tiles
+    int startX = _grid->itemAtPosition(tile->get_index() / _field_size, tile->get_index() % _field_size)->geometry().x();
+    int startY = _grid->itemAtPosition(tile->get_index() / _field_size, tile->get_index() % _field_size)->geometry().y();
 
     QRect endRect = _grid->cellRect(row, column);
 
@@ -281,7 +303,7 @@ void PuzzleView::moveTile(Tile *tile, int row, int column)
 
 bool PuzzleView::isMovebleLeft(int index)
 {
-    if (index % 4 != 0) {
+    if (index % _field_size != 0) {
         int find_index = index - 1;
         for (Tile *button : _buttons) {
             if (button->get_index() == find_index) {
@@ -297,7 +319,7 @@ bool PuzzleView::isMovebleLeft(int index)
 
 bool PuzzleView::isMovebleRight(int index)
 {
-    if (index % 4 != 3) {
+    if (index % _field_size != _field_size - 1) {
         int find_index = index + 1;
         for (Tile *button : _buttons) {
             if (button->get_index() == find_index) {
@@ -313,8 +335,8 @@ bool PuzzleView::isMovebleRight(int index)
 
 bool PuzzleView::isMovebleUp(int index)
 {
-    if (index > 3) {
-        int find_index = index - 4;
+    if (index > _field_size - 1) {
+        int find_index = index - _field_size;
         for (Tile *button : _buttons) {
             if (button->get_index() == find_index) {
                 if (button->get_number() == 0) {
@@ -329,8 +351,8 @@ bool PuzzleView::isMovebleUp(int index)
 
 bool PuzzleView::isMovebleDown(int index)
 {
-    if (index < 12) {
-        int find_index = index + 4;
+    if (index < _cnt_tiles - _field_size) {
+        int find_index = index + _field_size;
         for (Tile *button : _buttons) {
             if (button->get_index() == find_index) {
                 if (button->get_number() == 0) {
@@ -354,8 +376,8 @@ void PuzzleView::move(Tile *tile)
                 null_tile = button;
             }
         }
-        int column = tile_index % 4;
-        int row = tile_index / 4;
+        int column = tile_index % _field_size;
+        int row = tile_index / _field_size;
         moveTile(tile, row, column - 1);
         moveTile(null_tile, row, column);
         null_tile->set_index(tile_index);
@@ -369,8 +391,8 @@ void PuzzleView::move(Tile *tile)
                 null_tile = button;
             }
         }
-        int column = tile_index % 4;
-        int row = tile_index / 4;
+        int column = tile_index % _field_size;
+        int row = tile_index / _field_size;
         moveTile(tile, row, column + 1);
         moveTile(null_tile, row, column);
         null_tile->set_index(tile_index);
@@ -378,33 +400,33 @@ void PuzzleView::move(Tile *tile)
         count_of_attempts++;
     }
     else if (isMovebleUp(tile_index)) {
-        int find_index = tile_index - 4;
+        int find_index = tile_index - _field_size;
         for (Tile *button : _buttons) {
             if (button->get_index() == find_index) {
                 null_tile = button;
             }
         }
-        int column = tile_index % 4;
-        int row = tile_index / 4;
+        int column = tile_index % _field_size;
+        int row = tile_index / _field_size;
         moveTile(tile, row - 1, column);
         moveTile(null_tile, row, column);
         null_tile->set_index(tile_index);
-        tile->set_index(tile_index - 4);
+        tile->set_index(tile_index - _field_size);
         count_of_attempts++;
     }
     else if (isMovebleDown(tile_index)) {
-        int find_index = tile_index + 4;
+        int find_index = tile_index + _field_size;
         for (Tile *button : _buttons) {
             if (button->get_index() == find_index) {
                 null_tile = button;
             }
         }
-        int column = tile_index % 4;
-        int row = tile_index / 4;
+        int column = tile_index % _field_size;
+        int row = tile_index / _field_size;
         moveTile(tile, row + 1, column);
         moveTile(null_tile, row, column);
         null_tile->set_index(tile_index);
-        tile->set_index(tile_index + 4);
+        tile->set_index(tile_index + _field_size);
         count_of_attempts++;
     }
     if (checkSolved()) {

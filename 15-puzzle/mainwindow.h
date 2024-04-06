@@ -26,8 +26,14 @@ public:
 private slots:
     void on_bnt_select15_clicked();
 
+    void on_bnt_select8_clicked();
+
+    void on_bnt_select24_clicked();
+
+    void on_bnt_select35_clicked();
+
 private:
     Ui::MainWindow *ui;
-    Puzzle15 puzzleWidget;
+    Puzzle15 *puzzleWidget;
 };
 #endif // MAINWINDOW_H

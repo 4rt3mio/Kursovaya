@@ -23,7 +23,7 @@ class PuzzleView : public QWidget
 public:
     explicit PuzzleView(QWidget *parent = nullptr);
     ~PuzzleView();
-    void SetPuzzleView(QGridLayout* grid, QGraphicsView* view);
+    void SetPuzzleView(QGridLayout* grid, QGraphicsView* view, long long field_size);
     void generateInitialPuzzle();
     void generateInitialPicturePuzzle();
     void moveTile(Tile* tile, int row, int column);
@@ -36,7 +36,7 @@ public:
     bool isSolvable();
     bool checkSolved();
     void appendAttemptsToFile(int count_of_attempts);
-    void readResultsFromFile(const QString &fileName);
+    void readResultsFromFile();
     void showBestResults();
     QVector<Tile*> get_buttons();
     void genInit();
@@ -45,6 +45,8 @@ public:
 private:
     QGridLayout* _grid;
     QGraphicsView* _view;
+    long long _field_size;
+    long long _cnt_tiles;
     QVector<Tile*> _buttons;
     long long count_of_attempts = 0;
     QVector <long long> results;
