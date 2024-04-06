@@ -48,6 +48,7 @@ private:
     QVector<Tile*> _buttons;
     long long count_of_attempts = 0;
     QVector <long long> results;
+    bool isPicture = false;
 };
 
 #endif // PUZZLEVIEW_H

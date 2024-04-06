@@ -21,6 +21,7 @@ void PuzzleView::SetPuzzleView(QGridLayout* grid, QGraphicsView* view)
 
 void PuzzleView::generateInitialPuzzle()
 {
+    isPicture = false;
     QLayoutItem *child;
     while ((child = _grid->takeAt(0)) != nullptr) {
         delete child->widget();
@@ -55,6 +56,7 @@ void PuzzleView::generateInitialPuzzle()
 
 void PuzzleView::generateInitialPicturePuzzle()
 {
+    isPicture = true;
     QLayoutItem *child;
     while ((child = _grid->takeAt(0)) != nullptr) {
         delete child->widget();
@@ -79,7 +81,7 @@ void PuzzleView::generateInitialPicturePuzzle()
     for (int i = 0; i < 16; i++) {
         auto new_btn = new Tile(_view);
         new_btn->set_index(i);
-        int tileSize = cellSize;
+        int tileSize = cellSize - 3;
         new_btn->setMinimumSize(tileSize, tileSize);
         _grid->addWidget(new_btn, i / 4, i % 4);
         connect(new_btn, &Tile::clicked, this, [this, new_btn]() {
@@ -95,10 +97,10 @@ void PuzzleView::generateInitialPicturePuzzle()
         }
     }
 
-    for (int i = 0; i < 16; ++i) {
-        _buttons[i]->set_image(tiles[i]);
+    for (int i = 1; i < 16; ++i) {
+        _buttons[i]->set_image(tiles[i - 1]);
     }
-
+    _buttons[0]->set_image(tiles[15]);
     shuffleTiles();
     _view->setLayout(_grid);
 }
@@ -247,10 +249,11 @@ long long PuzzleView::get_count_of_attempts()
 void PuzzleView::moveTile(Tile *tile, int row, int column)
 {
     QPropertyAnimation *animation = new QPropertyAnimation(tile, "geometry", nullptr);
-    for (Tile *button : _buttons) {
-        button->setEnabled(false);
+    if (!isPicture) {
+        for (Tile *button : _buttons) {
+            button->setEnabled(false);
+        }
     }
-
     int startX = _grid->itemAtPosition(tile->get_index() / 4, tile->get_index() % 4)->geometry().x();
     int startY = _grid->itemAtPosition(tile->get_index() / 4, tile->get_index() % 4)->geometry().y();
 
@@ -265,8 +268,10 @@ void PuzzleView::moveTile(Tile *tile, int row, int column)
 
     connect(animation, &QPropertyAnimation::finished, [=]() {
         _grid->addWidget(tile, row, column);
-        for (Tile *button : _buttons) {
-            button->setEnabled(true);
+        if (!isPicture) {
+            for (Tile *button : _buttons) {
+                button->setEnabled(true);
+            }
         }
         animation->deleteLater();
     });
@@ -416,7 +421,8 @@ void PuzzleView::move(Tile *tile)
         msgBox.adjustSize();
         QAbstractButton *okButton = msgBox.addButton(tr("OK"), QMessageBox::ActionRole);
         QObject::connect(okButton, &QAbstractButton::clicked, [=]() {
-            generateInitialPuzzle();
+            if (isPicture) generateInitialPicturePuzzle();
+            else generateInitialPuzzle();
             genInit();
         });
         QRect screenGeometry = QGuiApplication::primaryScreen()->geometry();
