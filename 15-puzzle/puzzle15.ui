@@ -20,7 +20,7 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>90</y>
+     <y>60</y>
      <width>550</width>
      <height>550</height>
     </rect>
@@ -84,6 +84,32 @@
       </property>
       <property name="icon">
        <iconset theme="emblem-documents"/>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="">
+   <property name="geometry">
+    <rect>
+     <x>579</x>
+     <y>500</y>
+     <width>321</width>
+     <height>58</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout_2">
+    <item>
+     <widget class="QPushButton" name="bnt_connect_to_server">
+      <property name="text">
+       <string>Подключиться к серверу</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="bnt_servr_result">
+      <property name="text">
+       <string>Получить лучшие результаты</string>
       </property>
      </widget>
     </item>

@@ -21,6 +21,12 @@ void PuzzleView::SetPuzzleView(QGridLayout* grid, QGraphicsView* view, long long
     _cnt_tiles = _field_size * _field_size;
 }
 
+void PuzzleView::setClient(Client_Part *client, QString nickname)
+{
+    _client = client;
+    _nickname = nickname;
+}
+
 void PuzzleView::generateInitialPuzzle()
 {
     isPicture = false;
@@ -288,7 +294,7 @@ void PuzzleView::moveTile(Tile *tile, int row, int column)
         for (Tile *button : _buttons) {
             button->setEnabled(false);
         }
-    }//_cnt_tiles
+    }
     int startX = _grid->itemAtPosition(tile->get_index() / _field_size, tile->get_index() % _field_size)->geometry().x();
     int startY = _grid->itemAtPosition(tile->get_index() / _field_size, tile->get_index() % _field_size)->geometry().y();
 
@@ -444,6 +450,10 @@ void PuzzleView::move(Tile *tile)
     }
     if (checkSolved()) {
         appendAttemptsToFile(count_of_attempts);
+        if (_client != nullptr && _client->isConnected()) {
+            QString message = _nickname + " - " + QString::number(count_of_attempts);
+            _client->send_results(message);
+        }
         QMessageBox msgBox;
         const QString message = "<html><body>"
                                 "<h1>Головоломка собрана!</h1>"

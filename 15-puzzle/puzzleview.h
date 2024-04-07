@@ -17,6 +17,7 @@
 #include <random>
 #include <algorithm>
 #include "tile.h"
+#include "client_part.h"
 
 class PuzzleView : public QWidget
 {
@@ -26,6 +27,7 @@ public:
     explicit PuzzleView(QWidget *parent = nullptr);
     ~PuzzleView();
     void SetPuzzleView(QGridLayout* grid, QGraphicsView* view, long long field_size);
+    void setClient(Client_Part *client, QString nickname);
     void generateInitialPuzzle();
     void generateInitialPicturePuzzle();
     void moveTile(Tile* tile, int row, int column);
@@ -55,6 +57,8 @@ private:
     QVector <long long> results;
     bool isPicture = false;
     QVector<QString> pictureList;
+    Client_Part *_client = nullptr;
+    QString _nickname;
 };
 
 #endif // PUZZLEVIEW_H

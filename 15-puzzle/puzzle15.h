@@ -11,6 +11,8 @@
 #include <random>
 #include "tile.h"
 #include "puzzleview.h"
+#include "datainput.h"
+#include "client_part.h"
 
 namespace Ui {
 class Puzzle15;
@@ -29,12 +31,21 @@ private slots:
 
     void on_bnt_get_my_result_clicked();
 
+    void on_bnt_connect_to_server_clicked();
+
+    void on_bnt_servr_result_clicked();
+
+    void handleServerResponse(const QByteArray& data);
+
 private:
     Ui::Puzzle15 *ui;
     QGridLayout* _grid;
     QVector<Tile*> _buttons;
     PuzzleView *pv;
     QTimer *timer;
+    DataInput *dataInput;
+    Client_Part *client;
+    QString nickname;
 };
 
 #endif // PUZZLE15_H

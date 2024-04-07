@@ -1,4 +1,4 @@
-QT       += core gui network multimedia
+QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -9,29 +9,16 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    client_part.cpp \
-    datainput.cpp \
     main.cpp \
     mainwindow.cpp \
-    puzzle15.cpp \
-    puzzleview.cpp \
-    tile.cpp
+    tcpserver.cpp
 
 HEADERS += \
-    client_part.h \
-    datainput.h \
     mainwindow.h \
-    puzzle15.h \
-    puzzleview.h \
-    tile.h
+    tcpserver.h
 
 FORMS += \
-    datainput.ui \
-    mainwindow.ui \
-    puzzle15.ui
-
-RESOURCES += \
-    pictures
+    mainwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
