@@ -23,7 +23,7 @@ class Puzzle15 : public QWidget
     Q_OBJECT
 
 public:
-    explicit Puzzle15(int size, QWidget *parent = nullptr);
+    explicit Puzzle15(int size, QMainWindow *mainWindow, QWidget *parent = nullptr);
     ~Puzzle15();
 
 private slots:
@@ -37,9 +37,14 @@ private slots:
 
     void handleServerResponse(const QByteArray& data);
 
+    void on_bnt_goBackToMainMenu_clicked();
+
+    void on_bnt_close_clicked();
+
 private:
     Ui::Puzzle15 *ui;
     QGridLayout* _grid;
+    QMainWindow* _mainWindow;
     QVector<Tile*> _buttons;
     PuzzleView *pv;
     QTimer *timer;

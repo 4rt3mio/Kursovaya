@@ -1,11 +1,13 @@
 #include "puzzle15.h"
 #include "ui_puzzle15.h"
 
-Puzzle15::Puzzle15(int size, QWidget *parent)
+
+Puzzle15::Puzzle15(int size, QMainWindow *mainWindow, QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Puzzle15)
 {
     ui->setupUi(this);
+    _mainWindow = mainWindow;
     client = new Client_Part;
     connect(client, &Client_Part::dataReady, this, &Puzzle15::handleServerResponse);
     ui->graphicsView->setStyleSheet("background-color: #eb86dd;");
@@ -135,3 +137,16 @@ void Puzzle15::handleServerResponse(const QByteArray &data)
         msgBox.exec();
     }
 }
+
+void Puzzle15::on_bnt_goBackToMainMenu_clicked()
+{
+    hide();
+    _mainWindow->show();
+}
+
+
+void Puzzle15::on_bnt_close_clicked()
+{
+    close();
+}
+

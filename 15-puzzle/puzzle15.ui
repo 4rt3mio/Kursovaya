@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>912</width>
-    <height>660</height>
+    <width>933</width>
+    <height>603</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,20 +19,20 @@
   <widget class="QGraphicsView" name="graphicsView">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>60</y>
-     <width>550</width>
-     <height>550</height>
+     <x>10</x>
+     <y>10</y>
+     <width>581</width>
+     <height>581</height>
     </rect>
    </property>
   </widget>
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>580</x>
-     <y>290</y>
+     <x>600</x>
+     <y>50</y>
      <width>321</width>
-     <height>131</height>
+     <height>143</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -89,11 +89,11 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>579</x>
-     <y>500</y>
+     <x>600</x>
+     <y>470</y>
      <width>321</width>
      <height>58</height>
     </rect>
@@ -114,6 +114,38 @@
      </widget>
     </item>
    </layout>
+  </widget>
+  <widget class="QPushButton" name="bnt_goBackToMainMenu">
+   <property name="geometry">
+    <rect>
+     <x>600</x>
+     <y>10</y>
+     <width>319</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Вернуться в главное меню</string>
+   </property>
+   <property name="icon">
+    <iconset theme="edit-undo"/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="bnt_close">
+   <property name="geometry">
+    <rect>
+     <x>600</x>
+     <y>566</y>
+     <width>319</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Закрыть приложение</string>
+   </property>
+   <property name="icon">
+    <iconset theme="application-exit"/>
+   </property>
   </widget>
  </widget>
  <resources/>

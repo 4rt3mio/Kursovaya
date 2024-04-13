@@ -91,7 +91,7 @@ void PuzzleView::generateInitialPicturePuzzle()
     for (int i = 0; i < _cnt_tiles; i++) {
         auto new_btn = new Tile(_view);
         new_btn->set_index(i);
-        int tileSize = cellSize - 3;
+        int tileSize = cellSize - (7 - _field_size);
         new_btn->setMinimumSize(tileSize, tileSize);
         _grid->addWidget(new_btn, i / _field_size, i % _field_size);
         connect(new_btn, &Tile::clicked, this, [this, new_btn]() {
@@ -290,11 +290,6 @@ long long PuzzleView::get_count_of_attempts()
 void PuzzleView::moveTile(Tile *tile, int row, int column)
 {
     QPropertyAnimation *animation = new QPropertyAnimation(tile, "geometry", nullptr);
-    if (!isPicture) {
-        for (Tile *button : _buttons) {
-            button->setEnabled(false);
-        }
-    }
     int startX = _grid->itemAtPosition(tile->get_index() / _field_size, tile->get_index() % _field_size)->geometry().x();
     int startY = _grid->itemAtPosition(tile->get_index() / _field_size, tile->get_index() % _field_size)->geometry().y();
 
@@ -309,11 +304,6 @@ void PuzzleView::moveTile(Tile *tile, int row, int column)
 
     connect(animation, &QPropertyAnimation::finished, [=]() {
         _grid->addWidget(tile, row, column);
-        if (!isPicture) {
-            for (Tile *button : _buttons) {
-                button->setEnabled(true);
-            }
-        }
         animation->deleteLater();
     });
 

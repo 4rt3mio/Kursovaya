@@ -17,14 +17,14 @@ MainWindow::~MainWindow()
 void MainWindow::on_bnt_select15_clicked()
 {
     hide();
-    puzzleWidget = new Puzzle15(4);
+    puzzleWidget = new Puzzle15(4, this);
     puzzleWidget->show();
 }
 
 void MainWindow::on_bnt_select8_clicked()
 {
     hide();
-    puzzleWidget = new Puzzle15(3);
+    puzzleWidget = new Puzzle15(3, this);
     puzzleWidget->show();
 }
 
@@ -32,7 +32,7 @@ void MainWindow::on_bnt_select8_clicked()
 void MainWindow::on_bnt_select24_clicked()
 {
     hide();
-    puzzleWidget = new Puzzle15(5);
+    puzzleWidget = new Puzzle15(5, this);
     puzzleWidget->show();
 }
 
@@ -40,6 +40,6 @@ void MainWindow::on_bnt_select24_clicked()
 void MainWindow::on_bnt_select35_clicked()
 {
     hide();
-    puzzleWidget = new Puzzle15(6);
+    puzzleWidget = new Puzzle15(6, this);
     puzzleWidget->show();
 }
