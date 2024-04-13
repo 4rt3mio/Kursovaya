@@ -28,7 +28,10 @@ private slots:
 private:
     QTcpServer *_server;
     QList<QTcpSocket *> _socketsList;
-    QMap<QString, QVector<int>> m_data;
+    QMap<QString, QVector<int>> m_data3x3; // Для пятнашек 3x3
+    QMap<QString, QVector<int>> m_data4x4; // Для пятнашек 4x4
+    QMap<QString, QVector<int>> m_data5x5; // Для пятнашек 5x5
+    QMap<QString, QVector<int>> m_data6x6; // Для пятнашек 6x6
     bool _isStarted;
 };
 #endif // TCPSERVER_H

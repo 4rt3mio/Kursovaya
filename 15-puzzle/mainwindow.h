@@ -8,6 +8,8 @@
 #include <QPropertyAnimation>
 #include "tile.h"
 #include "puzzle15.h"
+#include "datainput.h"
+#include "client_part.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -32,8 +34,13 @@ private slots:
 
     void on_bnt_select35_clicked();
 
+    void on_bnt_connect_to_server_clicked();
+
 private:
     Ui::MainWindow *ui;
     Puzzle15 *puzzleWidget;
+    DataInput *dataInput;
+    Client_Part *client;
+    QString _nickname;
 };
 #endif // MAINWINDOW_H

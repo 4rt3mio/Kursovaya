@@ -441,7 +441,7 @@ void PuzzleView::move(Tile *tile)
     if (checkSolved()) {
         appendAttemptsToFile(count_of_attempts);
         if (_client != nullptr && _client->isConnected()) {
-            QString message = _nickname + " - " + QString::number(count_of_attempts);
+            QString message = QString::number(_field_size) + _nickname + " - " + QString::number(count_of_attempts);
             _client->send_results(message);
         }
         QMessageBox msgBox;

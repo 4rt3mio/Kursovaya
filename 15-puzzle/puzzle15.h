@@ -23,15 +23,13 @@ class Puzzle15 : public QWidget
     Q_OBJECT
 
 public:
-    explicit Puzzle15(int size, QMainWindow *mainWindow, QWidget *parent = nullptr);
+    explicit Puzzle15(int size, QMainWindow *mainWindow, Client_Part *client, QString nick, QWidget *parent = nullptr);
     ~Puzzle15();
 
 private slots:
     void on_bnt_generation_clicked();
 
     void on_bnt_get_my_result_clicked();
-
-    void on_bnt_connect_to_server_clicked();
 
     void on_bnt_servr_result_clicked();
 
@@ -47,9 +45,10 @@ private:
     QMainWindow* _mainWindow;
     QVector<Tile*> _buttons;
     PuzzleView *pv;
+    int _fieldSize;
     QTimer *timer;
     DataInput *dataInput;
-    Client_Part *client;
+    Client_Part* _client;
     QString nickname;
 };
 

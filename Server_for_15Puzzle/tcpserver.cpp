@@ -35,9 +35,36 @@ void TcpServer::clientDataReady()
     auto data = QString(socket->readAll());
     emit dataReceived(data);
 
+    if (data.isEmpty() || !data.at(0).isDigit()) {
+        qDebug() << "Invalid message format";
+        return;
+    }
+
+    int puzzleSize = data.at(0).digitValue();
+    data.remove(0, 1);
+
+    QMap<QString, QVector<int>> *m_data;
+    switch (puzzleSize) {
+    case 3:
+        m_data = &m_data3x3;
+        break;
+    case 4:
+        m_data = &m_data4x4;
+        break;
+    case 5:
+        m_data = &m_data5x5;
+        break;
+    case 6:
+        m_data = &m_data6x6;
+        break;
+    default:
+        qDebug() << "Invalid puzzle size";
+        return;
+    }
+
     if (data == "send_map_request") {
         QString reply;
-        for (auto it = m_data.constBegin(); it != m_data.constEnd(); ++it) {
+        for (auto it = m_data->constBegin(); it != m_data->constEnd(); ++it) {
             reply += it.key() + " - {";
             for (int i = 0; i < it.value().size(); ++i) {
                 reply += QString::number(it.value().at(i));
@@ -46,7 +73,7 @@ void TcpServer::clientDataReady()
             }
             reply += "}\n";
         }
-        socket->write(reply.toUtf8());
+        if (!reply.isEmpty()) socket->write(reply.toUtf8());
     } else {
         QStringList parts = data.split(" - ");
         if (parts.size() != 2) {
@@ -57,8 +84,7 @@ void TcpServer::clientDataReady()
         QString nic = parts[0];
         int value = parts[1].toInt();
 
-        // Добавляем значение в QMap
-        m_data[nic].append(value);
+        (*m_data)[nic].append(value);
     }
 }
 
