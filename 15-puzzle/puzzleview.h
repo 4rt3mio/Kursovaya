@@ -10,6 +10,7 @@
 #include <QGuiApplication>
 #include <QScreen>
 #include <QDir>
+#include <QTimer>
 #include <QRandomGenerator>
 #include <QFile>
 #include <QTextStream>
@@ -47,6 +48,7 @@ public:
     void genInit();
     void removeWidgetAt(int row, int column);
     long long get_count_of_attempts();
+    void solve(QVector<int> shifts);
 private:
     QGridLayout* _grid;
     QGraphicsView* _view;

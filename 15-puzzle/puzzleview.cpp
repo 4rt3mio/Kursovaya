@@ -287,6 +287,93 @@ long long PuzzleView::get_count_of_attempts()
     return count_of_attempts;
 }
 
+void PuzzleView::solve(QVector<int> shifts)
+{
+    Tile *null_tile = nullptr;
+    Tile *shift_tile = nullptr;
+    for (Tile *button : _buttons) {
+        if (button->get_number() == 0) {
+            null_tile = button;
+        }
+        button->setEnabled(false);
+    }
+    int i = 0;
+    QTimer *timer = new QTimer(this);
+    QObject::connect(timer, &QTimer::timeout, [=]() mutable {
+        if (i == shifts.size()) {
+            timer->stop();
+            for (Tile *button : _buttons) {
+                button->setEnabled(true);
+            }
+            QMessageBox msgBox;
+            const QString message = "<html><body>"
+                                    "<h1>Головоломка собрана!</h1>"
+                                    "<p>Количество ходов: </p>" + QString::number(count_of_attempts) +
+                                    "<p>Запускаем новую игру!!!</p>"
+                                    "</body></html>";
+            msgBox.setText(message);
+            msgBox.setIcon(QMessageBox::Information);
+            msgBox.resize(600, 600);
+            msgBox.adjustSize();
+            QAbstractButton *okButton = msgBox.addButton(tr("OK"), QMessageBox::ActionRole);
+            QObject::connect(okButton, &QAbstractButton::clicked, [=]() {
+                if (isPicture) generateInitialPicturePuzzle();
+                else generateInitialPuzzle();
+                genInit();
+            });
+            QRect screenGeometry = QGuiApplication::primaryScreen()->geometry();
+            int x = (screenGeometry.width() - msgBox.width()) / 2;
+            int y = (screenGeometry.height() - msgBox.height()) / 2;
+            msgBox.move(x, y);
+            msgBox.exec();
+            delete timer;
+        }
+        else {
+            int sdvig;
+            if (shifts[i] == 2) sdvig = -1;
+            else if (shifts[i] == 3) sdvig = 1;
+            else if (shifts[i] == 0) sdvig = -_field_size;
+            else sdvig = _field_size;
+            int tile_ind = null_tile->get_index() + sdvig;
+            for (Tile *button : _buttons) {
+                if (button->get_index() == tile_ind) shift_tile = button;
+            }
+            int column = shift_tile->get_index() % _field_size;
+            int row = shift_tile->get_index() / _field_size;
+            if (sdvig == -1) {
+                moveTile(shift_tile, row, column + 1);
+                moveTile(null_tile, row, column);
+                null_tile->set_index(tile_ind);
+                shift_tile->set_index(tile_ind + 1);
+                count_of_attempts++;
+            }
+            else if (sdvig == 1) {
+                moveTile(shift_tile, row, column - 1);
+                moveTile(null_tile, row, column);
+                null_tile->set_index(tile_ind);
+                shift_tile->set_index(tile_ind - 1);
+                count_of_attempts++;
+            }
+            else if (sdvig == -_field_size) {
+                moveTile(shift_tile, row + 1, column);
+                moveTile(null_tile, row, column);
+                null_tile->set_index(tile_ind);
+                shift_tile->set_index(tile_ind + _field_size);
+                count_of_attempts++;
+            }
+            else {
+                moveTile(shift_tile, row - 1, column);
+                moveTile(null_tile, row, column);
+                null_tile->set_index(tile_ind);
+                shift_tile->set_index(tile_ind - _field_size);
+                count_of_attempts++;
+            }
+            ++i;
+        }
+    });
+    timer->start(500);
+}
+
 void PuzzleView::moveTile(Tile *tile, int row, int column)
 {
     QPropertyAnimation *animation = new QPropertyAnimation(tile, "geometry", nullptr);
@@ -301,12 +388,10 @@ void PuzzleView::moveTile(Tile *tile, int row, int column)
     animation->setDuration(150);
     animation->setStartValue(QRect(startX, startY, tile->width(), tile->height()));
     animation->setEndValue(QRect(endX, endY, tile->width(), tile->height()));
-
     connect(animation, &QPropertyAnimation::finished, [=]() {
         _grid->addWidget(tile, row, column);
         animation->deleteLater();
     });
-
     animation->start();
 }
 

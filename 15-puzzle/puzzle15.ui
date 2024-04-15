@@ -32,7 +32,7 @@
      <x>600</x>
      <y>50</y>
      <width>321</width>
-     <height>191</height>
+     <height>241</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -94,6 +94,16 @@
       </property>
       <property name="icon">
        <iconset theme="applications-internet"/>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="bnt_solve">
+      <property name="text">
+       <string>Решить головоломку</string>
+      </property>
+      <property name="icon">
+       <iconset theme="media-playback-start"/>
       </property>
      </widget>
     </item>

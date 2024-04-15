@@ -13,6 +13,9 @@
 #include "puzzleview.h"
 #include "datainput.h"
 #include "client_part.h"
+#include <QtConcurrent/QtConcurrent>
+#include "puzzlesolver.h"
+#include "chain15.h"
 
 namespace Ui {
 class Puzzle15;
@@ -39,6 +42,10 @@ private slots:
 
     void on_bnt_close_clicked();
 
+    void on_bnt_solve_clicked();
+
+    void handleSolution(const Chain15 &result);
+
 private:
     Ui::Puzzle15 *ui;
     QGridLayout* _grid;
@@ -50,6 +57,9 @@ private:
     DataInput *dataInput;
     Client_Part* _client;
     QString nickname;
+    PuzzleSolver _solver;
+    QVector<QVector<int>> solver_matrix;
+    QVector<int> solver_shifts;
 };
 
 #endif // PUZZLE15_H

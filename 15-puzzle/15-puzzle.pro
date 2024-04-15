@@ -9,19 +9,23 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    chain15.cpp \
     client_part.cpp \
     datainput.cpp \
     main.cpp \
     mainwindow.cpp \
     puzzle15.cpp \
+    puzzlesolver.cpp \
     puzzleview.cpp \
     tile.cpp
 
 HEADERS += \
+    chain15.h \
     client_part.h \
     datainput.h \
     mainwindow.h \
     puzzle15.h \
+    puzzlesolver.h \
     puzzleview.h \
     tile.h
 
