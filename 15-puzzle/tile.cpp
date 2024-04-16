@@ -2,9 +2,9 @@
 
 Tile::Tile(QWidget *parent)
     : QPushButton(parent) {
-    int red = QRandomGenerator::global()->bounded(256);
-    int green = QRandomGenerator::global()->bounded(256);
-    int blue = QRandomGenerator::global()->bounded(256);
+    int green = QRandomGenerator::global()->bounded(150, 256);
+    int red = QRandomGenerator::global()->bounded(200, 256);
+    int blue = 0;
     QString colorStyle = QString("background-color: rgb(%1, %2, %3);").arg(red).arg(green).arg(blue);
     setStyleSheet(QString("QPushButton {%1}").arg(colorStyle));
 }

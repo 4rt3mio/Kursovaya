@@ -2,6 +2,7 @@
 #define TILE_H
 
 #include <QPushButton>
+#include <QLabel>
 #include <QRandomGenerator>
 
 class Tile : public QPushButton

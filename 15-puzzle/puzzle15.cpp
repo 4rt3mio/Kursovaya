@@ -7,15 +7,18 @@ Puzzle15::Puzzle15(int size, QMainWindow *mainWindow, Client_Part *client, QStri
     , ui(new Ui::Puzzle15)
 {
     ui->setupUi(this);
+    setFixedSize(933, 603);
     _mainWindow = mainWindow;
     _fieldSize = size;
     _client = client;
     nickname = nick;
     connect(_client, &Client_Part::dataReady, this, &Puzzle15::handleServerResponse);
-    ui->graphicsView->setStyleSheet("background-color: #eb86dd;");
+    setWindowTitle("Окно для игрыc");
     _grid = new QGridLayout(ui->graphicsView);
     pv = new PuzzleView();
     pv->SetPuzzleView(_grid, ui->graphicsView, size);
+    pv->setLabel(ui->lbl_pixmap);
+    pv->setButtons(ui->bnt_goBackToMainMenu, ui->bnt_generation);
     pv->generateInitialPuzzle();
     pv->genInit();
     pv->setClient(_client, nickname);
@@ -139,21 +142,35 @@ void Puzzle15::on_bnt_close_clicked()
 
 void Puzzle15::on_bnt_solve_clicked()
 {
-    QVector<Tile*> temp_buttons = pv->get_buttons();
-    QVector<int> vec_for_check(temp_buttons.size());
-    for (Tile *button : temp_buttons) {
-        vec_for_check[button->get_index()] = button->get_number();
+    if (pv->getSolving()) {
+        QVector<Tile*> temp_buttons = pv->get_buttons();
+        for (Tile *button : temp_buttons) {
+            button->setEnabled(true);
+        }
+        pv->setSolving(true);
     }
-    QVector<int> startState = vec_for_check;
-    QVector<int> endState;
-    for (int i = 1; i <= temp_buttons.size(); ++i){
-        endState.push_back(i % temp_buttons.size());
+    else {
+        QVector<Tile*> temp_buttons = pv->get_buttons();
+        for (Tile *button : temp_buttons) {
+            if (!ui->cbx_picture->isChecked()) button->setEnabled(false);
+        }
+        QVector<int> vec_for_check(temp_buttons.size());
+        for (Tile *button : temp_buttons) {
+            vec_for_check[button->get_index()] = button->get_number();
+        }
+        QVector<int> startState = vec_for_check;
+        QVector<int> endState;
+        for (int i = 1; i <= temp_buttons.size(); ++i){
+            endState.push_back(i % temp_buttons.size());
+        }
+        Chain15 start(startState);
+        Chain15 end(endState);
+        QtConcurrent::run([=](){
+            _solver.solvePuzzle(start, end.lastNode());
+        });
+        ui->bnt_generation->setEnabled(false);
+        ui->bnt_goBackToMainMenu->setEnabled(false);
     }
-    Chain15 start(startState);
-    Chain15 end(endState);
-    QtConcurrent::run([=](){
-        _solver.solvePuzzle(start, end.lastNode());
-    });
 }
 
 void Puzzle15::handleSolution(const Chain15 &result)
@@ -167,4 +184,3 @@ void Puzzle15::handleSolution(const Chain15 &result)
     shifts.push_back(_solver.get_empty_move(result.history_[result.history_.size() - 1].boardState_, result.boardState_));
     pv->solve(shifts);
 }
-

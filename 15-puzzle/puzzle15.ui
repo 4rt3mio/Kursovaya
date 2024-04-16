@@ -14,7 +14,7 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(153, 193, 241);</string>
+   <string notr="true">background-color: rgb(246, 211, 45);</string>
   </property>
   <widget class="QGraphicsView" name="graphicsView">
    <property name="geometry">
@@ -24,6 +24,9 @@
      <width>581</width>
      <height>581</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(0, 0, 0);</string>
    </property>
   </widget>
   <widget class="QWidget" name="layoutWidget">
@@ -38,6 +41,10 @@
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QCheckBox" name="cbx_picture">
+      <property name="styleSheet">
+       <string notr="true">color: rgb(0, 0, 0);
+background-color: rgb(246, 211, 45);</string>
+      </property>
       <property name="text">
        <string>Картинки</string>
       </property>
@@ -51,6 +58,10 @@
       <property name="autoFillBackground">
        <bool>false</bool>
       </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(0, 0, 0);
+background-color: rgb(246, 211, 45);</string>
+      </property>
       <property name="text">
        <string>Сгенерировать случайную расстановку</string>
       </property>
@@ -63,6 +74,10 @@
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <widget class="QLabel" name="lbl_info_attempts">
+        <property name="styleSheet">
+         <string notr="true">color: rgb(0, 0, 0);
+background-color: rgb(246, 211, 45);</string>
+        </property>
         <property name="text">
          <string>Текущее число попыток: </string>
         </property>
@@ -70,6 +85,10 @@
       </item>
       <item>
        <widget class="QLabel" name="lbl_count_attempts">
+        <property name="styleSheet">
+         <string notr="true">color: rgb(0, 0, 0);
+background-color: rgb(246, 211, 45);</string>
+        </property>
         <property name="text">
          <string>0</string>
         </property>
@@ -79,6 +98,10 @@
     </item>
     <item>
      <widget class="QPushButton" name="bnt_get_my_result">
+      <property name="styleSheet">
+       <string notr="true">color: rgb(0, 0, 0);
+background-color: rgb(246, 211, 45);</string>
+      </property>
       <property name="text">
        <string>Вывести свои лучшие результаты</string>
       </property>
@@ -89,6 +112,10 @@
     </item>
     <item>
      <widget class="QPushButton" name="bnt_servr_result">
+      <property name="styleSheet">
+       <string notr="true">color: rgb(0, 0, 0);
+background-color: rgb(246, 211, 45);</string>
+      </property>
       <property name="text">
        <string>Получить лучшие результаты с сервера</string>
       </property>
@@ -99,8 +126,12 @@
     </item>
     <item>
      <widget class="QPushButton" name="bnt_solve">
+      <property name="styleSheet">
+       <string notr="true">color: rgb(0, 0, 0);
+background-color: rgb(246, 211, 45);</string>
+      </property>
       <property name="text">
-       <string>Решить головоломку</string>
+       <string>Решить головоломку / Остановить</string>
       </property>
       <property name="icon">
        <iconset theme="media-playback-start"/>
@@ -118,6 +149,10 @@
      <height>25</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(0, 0, 0);
+background-color: rgb(246, 211, 45);</string>
+   </property>
    <property name="text">
     <string>Вернуться в главное меню</string>
    </property>
@@ -134,11 +169,28 @@
      <height>25</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(0, 0, 0);
+background-color: rgb(246, 211, 45);</string>
+   </property>
    <property name="text">
     <string>Закрыть приложение</string>
    </property>
    <property name="icon">
     <iconset theme="application-exit"/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbl_pixmap">
+   <property name="geometry">
+    <rect>
+     <x>630</x>
+     <y>300</y>
+     <width>251</width>
+     <height>251</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
    </property>
   </widget>
  </widget>

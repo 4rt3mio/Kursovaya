@@ -60,6 +60,7 @@ private:
     PuzzleSolver _solver;
     QVector<QVector<int>> solver_matrix;
     QVector<int> solver_shifts;
+    bool isSolving = false;
 };
 
 #endif // PUZZLE15_H

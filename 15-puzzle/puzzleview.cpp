@@ -27,6 +27,27 @@ void PuzzleView::setClient(Client_Part *client, QString nickname)
     _nickname = nickname;
 }
 
+void PuzzleView::setLabel(QLabel *label)
+{
+    _label = label;
+}
+
+void PuzzleView::setSolving(bool isSolv)
+{
+    isSolving = isSolv;
+}
+
+void PuzzleView::setButtons(QPushButton *back, QPushButton *gen)
+{
+    _back = back;
+    _gen = gen;
+}
+
+bool PuzzleView::getSolving()
+{
+    return currSolving;
+}
+
 void PuzzleView::generateInitialPuzzle()
 {
     isPicture = false;
@@ -39,6 +60,7 @@ void PuzzleView::generateInitialPuzzle()
     _buttons.clear();
     count_of_attempts = 0;
     int cellSize = std::min(_view->width(), _view->height()) / _field_size;
+    _label->clear();
 
     for (int i = 0; i < _cnt_tiles; i++) {
         auto new_btn = new Tile(_view);
@@ -87,6 +109,13 @@ void PuzzleView::generateInitialPicturePuzzle()
             tiles.append(pixmap.copy(rect));
         }
     }
+    int squareSize = qMin(imageSize.width(), imageSize.height());
+    int startX = 0;
+    int startY = 0;
+    QRect squareRect(startX, startY, squareSize, squareSize);
+    QPixmap squaredPixmap = pixmap.copy(squareRect);
+    QPixmap scaledPixmap = squaredPixmap.scaled(_label->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    _label->setPixmap(scaledPixmap);
 
     for (int i = 0; i < _cnt_tiles; i++) {
         auto new_btn = new Tile(_view);
@@ -289,18 +318,30 @@ long long PuzzleView::get_count_of_attempts()
 
 void PuzzleView::solve(QVector<int> shifts)
 {
+    currSolving = true;
     Tile *null_tile = nullptr;
     Tile *shift_tile = nullptr;
     for (Tile *button : _buttons) {
         if (button->get_number() == 0) {
             null_tile = button;
         }
-        button->setEnabled(false);
     }
     int i = 0;
     QTimer *timer = new QTimer(this);
     QObject::connect(timer, &QTimer::timeout, [=]() mutable {
-        if (i == shifts.size()) {
+        if (isSolving) {
+            currSolving = false;
+            isSolving = false;
+            _back->setEnabled(true);
+            _gen->setEnabled(true);
+            timer->stop();
+            delete timer;
+        }
+        else if (i == shifts.size()) {
+            isSolving = false;
+            currSolving = false;
+            _back->setEnabled(true);
+            _gen->setEnabled(true);
             timer->stop();
             for (Tile *button : _buttons) {
                 button->setEnabled(true);

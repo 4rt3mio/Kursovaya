@@ -14,7 +14,10 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">#lnl_ip[state = &quot;0&quot;] {
+   <string notr="true">#DataInput {
+	background-color: rgb(246, 211, 45);
+}
+#lnl_ip[state = &quot;0&quot;] {
 	background-color: red;
 }
 #lnl_ip[state = &quot;1&quot;] {
@@ -36,7 +39,7 @@
   <widget class="QPushButton" name="bnt_connect">
    <property name="geometry">
     <rect>
-     <x>120</x>
+     <x>100</x>
      <y>230</y>
      <width>201</width>
      <height>25</height>
@@ -60,6 +63,9 @@
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <widget class="QLabel" name="lbl_nik">
+        <property name="styleSheet">
+         <string notr="true">color: rgb(0, 0, 0);</string>
+        </property>
         <property name="text">
          <string>Введите ваш ник</string>
         </property>
@@ -74,6 +80,9 @@
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
        <widget class="QLabel" name="lbl_ip">
+        <property name="styleSheet">
+         <string notr="true">color: rgb(0, 0, 0);</string>
+        </property>
         <property name="text">
          <string>Введите IP адресс сервера</string>
         </property>
@@ -98,6 +107,9 @@
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
        <widget class="QLabel" name="lbl_port">
+        <property name="styleSheet">
+         <string notr="true">color: rgb(0, 0, 0);</string>
+        </property>
         <property name="text">
          <string>Введите порт</string>
         </property>

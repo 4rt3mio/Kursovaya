@@ -6,6 +6,8 @@ DataInput::DataInput(QWidget *parent)
     , ui(new Ui::DataInput)
 {
     ui->setupUi(this);
+    setFixedSize(400, 300);
+    setWindowTitle("Окно для подлючения к серверу");
     ui->bnt_connect->setEnabled(false);
     ui->bnt_connect->setStyleSheet("background-color: gray;");
     connect(ui->lnl_nik, &QLineEdit::textChanged, this, &DataInput::checkInputs);

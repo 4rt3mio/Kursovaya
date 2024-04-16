@@ -29,6 +29,10 @@ public:
     ~PuzzleView();
     void SetPuzzleView(QGridLayout* grid, QGraphicsView* view, long long field_size);
     void setClient(Client_Part *client, QString nickname);
+    void setLabel(QLabel* label);
+    void setSolving(bool isSolv);
+    void setButtons(QPushButton* back, QPushButton* gen);
+    bool getSolving();
     void generateInitialPuzzle();
     void generateInitialPicturePuzzle();
     void moveTile(Tile* tile, int row, int column);
@@ -55,12 +59,17 @@ private:
     long long _field_size;
     long long _cnt_tiles;
     QVector<Tile*> _buttons;
+    QLabel* _label;
+    QPushButton* _back;
+    QPushButton* _gen;
     long long count_of_attempts = 0;
     QVector <long long> results;
     bool isPicture = false;
     QVector<QString> pictureList;
     Client_Part *_client = nullptr;
     QString _nickname;
+    bool currSolving = false;
+    bool isSolving = false;
 };
 
 #endif // PUZZLEVIEW_H
