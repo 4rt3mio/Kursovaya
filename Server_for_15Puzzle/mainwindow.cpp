@@ -7,6 +7,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     _server = nullptr;
+    setWindowTitle("Окно сервера");
 }
 
 MainWindow::~MainWindow()

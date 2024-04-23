@@ -13,7 +13,7 @@ Puzzle15::Puzzle15(int size, QMainWindow *mainWindow, Client_Part *client, QStri
     _client = client;
     nickname = nick;
     connect(_client, &Client_Part::dataReady, this, &Puzzle15::handleServerResponse);
-    setWindowTitle("Окно для игрыc");
+    setWindowTitle("Окно для игры");
     _grid = new QGridLayout(ui->graphicsView);
     pv = new PuzzleView();
     pv->SetPuzzleView(_grid, ui->graphicsView, size);
