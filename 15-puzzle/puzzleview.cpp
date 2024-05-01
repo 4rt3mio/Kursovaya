@@ -148,9 +148,7 @@ void PuzzleView::shuffleTiles()
 {
     QVector<int> indices(_cnt_tiles);
     std::iota(indices.begin(), indices.end(), 0);
-    std::random_device rd;
-    std::mt19937 g(rd());
-    std::shuffle(indices.begin(), indices.end(), g);
+    fisherYatesShuffle(indices);
     for (int i = 0; i < _cnt_tiles; ++i) {
         int newIndex = indices[i];
         _buttons[newIndex]->set_index(i);
@@ -264,8 +262,8 @@ void PuzzleView::showBestResults()
         QMessageBox::information(nullptr, "Мои результаты", "Нет доступных результатов.");
         return;
     }
-
-    std::sort(results.begin(), results.end());
+    TimSort sorter;
+    sorter.timSort(results, results.size());
     QVector<long long> bestResults;
     for (int i = 0; i < qMin(15, results.size()); ++i) {
         bestResults.append(results[i]);
@@ -591,5 +589,16 @@ void PuzzleView::move(Tile *tile)
         int y = (screenGeometry.height() - msgBox.height()) / 2;
         msgBox.move(x, y);
         msgBox.exec();
+    }
+}
+
+void PuzzleView::fisherYatesShuffle(QVector<int> &array)
+{
+    int n = array.size();
+    for (int i = n - 1; i > 0; --i) {
+        int j = rand() % (i + 1);
+        int temp = array[j];
+        array[j] = array[i];
+        array[i] = temp;
     }
 }

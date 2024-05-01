@@ -17,7 +17,8 @@ SOURCES += \
     puzzle15.cpp \
     puzzlesolver.cpp \
     puzzleview.cpp \
-    tile.cpp
+    tile.cpp \
+    timsort.cpp
 
 HEADERS += \
     chain15.h \
@@ -27,7 +28,8 @@ HEADERS += \
     puzzle15.h \
     puzzlesolver.h \
     puzzleview.h \
-    tile.h
+    tile.h \
+    timsort.h
 
 FORMS += \
     datainput.ui \

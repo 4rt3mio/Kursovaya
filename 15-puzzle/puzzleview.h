@@ -19,6 +19,7 @@
 #include <algorithm>
 #include "tile.h"
 #include "client_part.h"
+#include "timsort.h"
 
 class PuzzleView : public QWidget
 {
@@ -41,6 +42,7 @@ public:
     bool isMovebleUp(int index);
     bool isMovebleDown(int index);
     void move(Tile* tile);
+    void fisherYatesShuffle(QVector<int> &array);
     void shuffleTiles();
     bool isSolvable();
     bool checkSolved();
