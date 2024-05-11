@@ -36,6 +36,8 @@ private slots:
 
     void on_bnt_connect_to_server_clicked();
 
+    void on_bnt_closeApp_clicked();
+
 private:
     Ui::MainWindow *ui;
     Puzzle15 *puzzleWidget;

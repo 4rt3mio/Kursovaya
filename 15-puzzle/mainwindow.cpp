@@ -57,3 +57,9 @@ void MainWindow::on_bnt_connect_to_server_clicked()
         _nickname = name;
     });
 }
+
+void MainWindow::on_bnt_closeApp_clicked()
+{
+    close();
+}
+
